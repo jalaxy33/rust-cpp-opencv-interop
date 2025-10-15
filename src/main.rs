@@ -6,10 +6,10 @@ fn main() -> AnyResult<()> {
     // let img_path = "assets/02.jpg";
     ensure!(is_path_valid(img_path), "File not found: {}", img_path);
 
-    let img = read_image(img_path)?;
-    display_image(&img, "Display Image")?;
+    let img = read_image(img_path)?;  // c++-rust hybrid function
+    display_image(&img, "Display Image")?; // pure rust function
 
-    let resized_img = resize_image(&img, 800, 600)?;
+    let resized_img = resize_image(&img, 800, 600)?;  // pure rust function
     display_image(&resized_img, "Resized Image (800x600)")?;
 
     Ok(())
