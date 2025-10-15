@@ -1,0 +1,19 @@
+[package]
+name = "rust-cpp-opencv-interop"
+version = "0.1.0"
+edition = "2024"
+
+
+[lib]
+name = "librust"
+crate-type = ["rlib", "cdylib"]
+
+
+[dependencies]
+cxx = "1.0.186"
+opencv = "0.96.0"
+anyhow = "1.0"
+
+
+[build-dependencies]
+cxx-build = { version = "1.0.186", features = ["parallel"] }
