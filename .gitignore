@@ -1,6 +1,7 @@
 # build artifacts
 target/
 build/
+CMakeUserPresets.json
 
 # dependency version control
 *.lock

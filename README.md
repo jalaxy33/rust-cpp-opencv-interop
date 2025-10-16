@@ -8,45 +8,27 @@ This project demonstrates how to interoperate between Rust and C++ using OpenCV 
 - **C++ compiler**: g++/clang++/MSVC
 - **[CMake](https://cmake.org/download/) build tools**
 - **[Rust toolchain](https://www.rust-lang.org/tools/install)**
-- **[OpenCV](https://github.com/opencv/opencv/)**
+- **[vcpkg](https://vcpkg.io/en/index.html)**: C/C++ package manager.
 
 
 ## Usage
 
-1. Set OpenCV-related environment variables following the instructions in [rust-opencv](https://github.com/twistedfall/opencv-rust?tab=readme-ov-file#environment-variables) in [`.cargo/config.toml`](./.cargo/config.toml). 
+1. Configure the project with CMake using the provided presets in [`CMakePresets.json`](./CMakePresets.json):
 
-```toml
-[env]
+   ```bash
+   cmake --preset vcpkg   # For debug build
+   cmake --preset vcpkg-release # For release build
+   ```
 
-# for rust-opencv
-# read: https://github.com/twistedfall/opencv-rust/tree/master?tab=readme-ov-file#environment-variables
-OPENCV_LINK_LIBS = "opencv_world4120.lib,opencv_world4120d.lib"
-OPENCV_LINK_PATHS = "D:/ScoopApps/apps/opencv/current/x64/vc16/lib"
-OPENCV_INCLUDE_PATHS = "D:/ScoopApps/apps/opencv/current/include"
-```
+2. Build the project:
 
-2. For Rust, build and run the project using Cargo:
+    ```bash
+    cmake --build build
+    ```
 
-```bash
-# Build
-cargo build  # Debug build
-cargo build --release  # Release build
+3. Run the executable:
 
-# run the executable
-cargo run  # Debug
-cargo run --release  # Release
-```
-
-3. For C++, build and run the project using CMake:
-
-```bash
-# Configure and build
-cmake -B build && cmake --build build  # Debug build
-cmake -B build && cmake --build build --config Release  # Release build
-
-# Run the executable (change `demo` to actual target name)
-./build/Debug/demo.exe  # On Windows (Debug mode)
-./build/Debug/demo      # On Linux/Mac (Debug mode)
-```
-
-
+    ```bash
+    ./build/demo.exe   # On Windows
+    ./build/demo      # On Linux/macOS
+    ```
