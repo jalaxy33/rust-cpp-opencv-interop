@@ -1,0 +1,13 @@
+# build artifacts
+target/
+build/
+CMakeUserPresets.json
+
+
+# lock files
+*.lock
+
+
+# IDE files
+.vscode/
+
