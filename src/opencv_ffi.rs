@@ -10,15 +10,15 @@ pub mod ffi {
 
         type CMat; // alias for cv::Mat
 
-        // ------------- C++ OpenCV Functions -------------
-
-        pub fn flip_image_cpp(input_mat: &CMat) -> UniquePtr<CMat>;
-
         // ------------- Conversion Functions -------------
 
         fn rust_mat_to_cpp_ref(rust_mat_ptr_addr: usize) -> *const CMat;
         fn rust_to_cpp_safe(rust_mat_ptr_addr: usize) -> UniquePtr<CMat>;
         fn cpp_to_rust_safe(cpp_mat: &CMat) -> usize;
+
+        // ------------- C++ OpenCV Functions -------------
+
+        fn flip_image_cpp(input_mat: &CMat) -> UniquePtr<CMat>;
     }
 
     extern "Rust" {
