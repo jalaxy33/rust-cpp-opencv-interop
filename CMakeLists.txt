@@ -19,13 +19,17 @@ set(CMAKE_CXX_STANDARD 17)
 # =============================================================================
 
 function(setup_rust_library targetname)
+    # Fix Windows MSVC runtime library compatibility
+    if(WIN32 AND MSVC)
+        target_compile_options(${targetname} PRIVATE /MD)
+    endif()
 
     # Ensure the Rust library is built
     set(RUST_TARGET_DIR ${CMAKE_SOURCE_DIR}/target)
     set(rust_lib_dir ${RUST_TARGET_DIR}/release)   # assuming release build
 
     if(NOT EXISTS ${rust_lib_dir})
-        message(FATAL_ERROR "Rust library not found at ${rust_lib_dir}. Please build the Rust project first with 'cargo build --release'.")
+        message(FATAL_ERROR "Rust library not found at ${rust_lib_dir}. Please build the Rust library first with 'cargo build --release'.")
     endif()
 
     # Search for the Rust library
