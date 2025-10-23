@@ -39,7 +39,11 @@ function(setup_rust_library targetname)
     set(rust_lib_dir ${RUST_TARGET_DIR}/release)   # assuming release build
 
     if(NOT EXISTS ${rust_lib_dir})
-        message(FATAL_ERROR "Rust library not found at ${rust_lib_dir}. Please build the Rust library first with 'cargo build --release'.")
+        message(WARNING "Rust library not found. Building Rust library now...")
+        execute_process(
+            COMMAND cargo build --release
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
     endif()
 
     # Search for the Rust library
