@@ -7,6 +7,9 @@ cmake_minimum_required(VERSION 3.10.0)
 # vcpkg integration
 set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 
+# generate `compile_commands.json` for clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # =============================================================================
 # Project Configuration
 # =============================================================================
@@ -52,7 +55,7 @@ function(setup_rust_library targetname)
         target_link_libraries(${targetname} PRIVATE ${rust_lib})
     endforeach()
 
-    
+
     # Set include directories for cxx generated headers
     file(GLOB cxxbridge_include_dirs
         "${RUST_TARGET_DIR}/cxxbridge/*/src"
@@ -105,6 +108,3 @@ setup_rust_library(${targetname})
 
 # Set global definitions for c++ codes
 target_compile_definitions(${targetname} PRIVATE PROJECT_ROOT="${CMAKE_SOURCE_DIR}")
-
-
-

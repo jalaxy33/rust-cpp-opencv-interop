@@ -3,11 +3,14 @@ target/
 build/
 CMakeUserPresets.json
 
-
-# lock files
-*.lock
-
-
-# IDE files
+# IDE artifacts
 .vscode/
+.idea/
+.zed/
 
+# cache files
+.cache/
+
+# dependency version control
+*.lock
+vcpkg-configuration.json
