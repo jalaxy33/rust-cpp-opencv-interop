@@ -47,7 +47,7 @@ This project demonstrates how to interoperate between Rust and C++ using OpenCV 
    cmake -B build
    ```
 
-2. Build the C++ project:
+2. Build the C++ project (Release build only):
 
    ```bash
    cmake --build build --config Release # release build
@@ -56,6 +56,12 @@ This project demonstrates how to interoperate between Rust and C++ using OpenCV 
 3. Run the C++ executable:
 
    ```bash
-   ./build/Release/demo.exe  # On Windows  (release build)
-   ./build/Release/demo  # On Linux/macOS (release build)
+   ./build/Release/demo.exe  # On Windows
+   ./build/Release/demo  # On Linux/macOS
+   ```
+
+4. Run all tests:
+
+   ```bash
+   ctest --test-dir build --config Release -j24
    ```
