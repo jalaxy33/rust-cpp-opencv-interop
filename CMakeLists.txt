@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.10.0)
 
 # vcpkg integration
 set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+set(VCPKG_INSTALLED_DIR "$ENV{VCPKG_ROOT}/installed")   # use system-wide vcpkg installation
 
 # generate `compile_commands.json` for clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

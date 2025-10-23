@@ -3,37 +3,41 @@ use crate::resize_image;
 use anyhow::Result as AnyResult;
 use cxx::UniquePtr;
 
+/// FFI Bridge between Rust and C++
 #[cxx::bridge]
 pub mod ffi {
     unsafe extern "C++" {
         include!("opencv_ffi.h");
 
+        // ******** Type ********
+
         type CMat; // alias for cv::Mat
 
-        // ------------- Conversion Functions -------------
-
+        /// ******** Conversion Functions ********
         fn rust_mat_to_cpp_ref(rust_mat_ptr_addr: usize) -> *const CMat;
         fn rust_to_cpp_safe(rust_mat_ptr_addr: usize) -> UniquePtr<CMat>;
         fn cpp_to_rust_safe(cpp_mat: &CMat) -> usize;
 
-        // ------------- C++ OpenCV Functions -------------
+        // ******** Functions from C++ ********
 
         fn flip_image_cpp(input_mat: &CMat) -> UniquePtr<CMat>;
     }
 
     extern "Rust" {
+        // ******** Functions exposed to C++ ********
+
         fn resize_image_rust(input_mat: &CMat, width: i32, height: i32) -> Result<UniquePtr<CMat>>;
     }
 }
 
-/// Conversion between Rust OpenCV Mat and C++ OpenCV Mat
-pub mod conversion {
+/// Module for OpenCV data conversion
+pub mod cv_conversion {
     use super::*;
     use opencv::prelude::*;
 
     pub use super::ffi::CMat;
 
-    // ----------- Core Conversion Functions -----------
+    // ************ Core Conversion Functions ************
 
     /// Rust Mat -> C++ Mat (safe copy)
     pub fn safe_convert_rust_to_cpp(
@@ -70,7 +74,7 @@ pub mod conversion {
         Ok(unsafe { &*cpp_ref_ptr })
     }
 
-    // ---------- Internal Helper Functions ------------
+    // ************ Internal Helper Functions ************
 
     /// Create Rust Mat from C++ pointer address
     unsafe fn from_ptr_addr(ptr_addr: usize) -> opencv::core::Mat {
@@ -83,21 +87,21 @@ pub mod conversion {
     }
 }
 
-// ---------------- Functions exposed to C++  -----------------
+// ================ Functions exposed to C++  ================
 
 fn resize_image_rust(
     input_mat: &ffi::CMat,
     width: i32,
     height: i32,
 ) -> AnyResult<UniquePtr<ffi::CMat>> {
-    let rust_mat = conversion::safe_convert_cpp_to_rust(input_mat)?;
+    let rust_mat = cv_conversion::safe_convert_cpp_to_rust(input_mat)?;
     let resized_mat = resize_image(&rust_mat, width, height)?;
 
     // Convert the resized Rust Mat back to C++ Mat (safe copy)
-    conversion::safe_convert_rust_to_cpp(&resized_mat)
+    cv_conversion::safe_convert_rust_to_cpp(&resized_mat)
 }
 
-// -------------- Unit Tests ----------------
+// ================ Unit Tests ================
 
 #[cfg(test)]
 mod tests {
@@ -107,7 +111,7 @@ mod tests {
 
     #[test]
     fn test_conversions() -> AnyResult<()> {
-        use super::conversion::*;
+        use super::cv_conversion::*;
 
         let img_path = "assets/01.png";
         if !std::path::Path::new(img_path).exists() {
@@ -132,7 +136,7 @@ mod tests {
 
     #[test]
     fn test_resize_image_rust() -> AnyResult<()> {
-        use super::conversion::*;
+        use super::cv_conversion::*;
         use super::resize_image_rust;
 
         let img_path = "assets/01.png";

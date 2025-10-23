@@ -1,6 +1,6 @@
 pub mod opencv_ffi;
 
-use opencv_ffi::conversion;
+use opencv_ffi::cv_conversion;
 use opencv_ffi::ffi;
 
 use anyhow::Result as AnyResult;
@@ -40,13 +40,13 @@ pub fn flip_image_with_cpp(img: &opencv::core::Mat) -> AnyResult<opencv::core::M
 
     unsafe {
         // Rust Mat -> C++ Mat (Zero-copy conversion)
-        let cpp_ref = conversion::zero_copy_rust_to_cpp_ref(img)?;
+        let cpp_ref = cv_conversion::zero_copy_rust_to_cpp_ref(img)?;
 
         // Call C++ function
         let flipped_cpp_mat = ffi::flip_image_cpp(cpp_ref);
 
         // C++ Mat -> Rust Mat
-        let rust_mat = conversion::safe_convert_cpp_to_rust(&flipped_cpp_mat)?;
+        let rust_mat = cv_conversion::safe_convert_cpp_to_rust(&flipped_cpp_mat)?;
 
         Ok(rust_mat)
     }

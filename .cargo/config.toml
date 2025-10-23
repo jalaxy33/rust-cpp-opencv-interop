@@ -1,8 +1,4 @@
-[env]
+# [env]
 
-VCPKGRS_DYNAMIC = "1"
-
-# Set OpenCV version to 4.x (compatibility setting)
-OPENCV_PACKAGE_NAME = "opencv4"
-OPENCV_VCPKG_NAME = "opencv4"
+# VCPKGRS_DYNAMIC = "1"
 
